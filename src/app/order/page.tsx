@@ -14,6 +14,43 @@ type FormData = {
   notes: string
 }
 
+function CheckCircleIcon() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-green-400">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  )
+}
+
+function CreditCardIcon() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-primary)]">
+      <rect x="1" y="4" width="22" height="16" rx="2" />
+      <path d="M1 10h22" />
+      <path d="M5 15h4" />
+      <path d="M13 15h2" />
+    </svg>
+  )
+}
+
+function ArrowLeftIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 12H5" />
+      <path d="m12 19-7-7 7-7" />
+    </svg>
+  )
+}
+
+function CheckIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12l5 5L20 7" />
+    </svg>
+  )
+}
+
 export default function OrderPage() {
   const [form, setForm] = useState<FormData>({
     name: '',
@@ -59,14 +96,15 @@ export default function OrderPage() {
   // Step 3: Payment success
   if (paid) {
     return (
-      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center px-6">
-        <div className="glass-card p-12 max-w-lg w-full text-center">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/20 flex items-center justify-center">
-            <span className="text-4xl">&#10003;</span>
+      <div className="min-h-screen flex items-center justify-center px-6">
+        <div className="glass-card p-12 max-w-lg w-full text-center relative overflow-hidden animate-fade-in-up">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-400 to-transparent" />
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+            <CheckCircleIcon />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Payment Successful!</h2>
+          <h2 className="text-3xl font-bold mb-4 tracking-tight">Payment Successful</h2>
           <p className="text-[var(--color-text-muted)] mb-2">
-            Thank you, <strong className="text-white">{form.name}</strong>!
+            Thank you, <strong className="text-white">{form.name}</strong>.
           </p>
           <p className="text-[var(--color-text-muted)] mb-6">
             Our team will start building your {form.platform} bot powered by{' '}
@@ -75,7 +113,7 @@ export default function OrderPage() {
           <p className="text-[var(--color-text-muted)] mb-8 text-sm">
             We&apos;ll reach out to <strong className="text-white">{form.email}</strong> within 24 hours.
           </p>
-          <Link href="/" className="btn-primary inline-block">
+          <Link href="/" className="btn-primary inline-block px-8 py-3">
             Back to Home
           </Link>
         </div>
@@ -86,30 +124,32 @@ export default function OrderPage() {
   // Step 2: PayPal payment (lead already saved)
   if (orderId) {
     return (
-      <div className="min-h-screen bg-[var(--color-background)]">
+      <div className="min-h-screen">
         <nav className="fixed top-0 left-0 right-0 z-50 glass">
           <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold gradient-text">
+            <Link href="/" className="text-2xl font-bold gradient-text tracking-tight">
               MoltBotSupport
             </Link>
-            <Link href="/" className="text-[var(--color-text-muted)] hover:text-white transition text-sm">
-              &larr; Back to Home
+            <Link href="/" className="flex items-center gap-2 text-[var(--color-text-muted)] hover:text-white transition-colors duration-300 text-sm">
+              <ArrowLeftIcon />
+              Back to Home
             </Link>
           </div>
         </nav>
 
         <div className="pt-28 pb-20 px-6 flex items-center justify-center min-h-screen">
-          <div className="glass-card p-10 max-w-md w-full text-center">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[var(--color-primary)]/20 flex items-center justify-center">
-              <span className="text-3xl">&#128176;</span>
+          <div className="glass-card p-10 max-w-md w-full text-center relative overflow-hidden animate-fade-in-up">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent" />
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
+              <CreditCardIcon />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Almost there!</h2>
+            <h2 className="text-2xl font-bold mb-2 tracking-tight">Almost there!</h2>
             <p className="text-[var(--color-text-muted)] mb-8">
               Complete your payment to get started.
             </p>
 
             {error && (
-              <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+              <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                 {error}
               </div>
             )}
@@ -170,7 +210,7 @@ export default function OrderPage() {
               />
             </PayPalScriptProvider>
 
-            <p className="text-center text-xs text-[var(--color-text-muted)] mt-6">
+            <p className="text-center text-xs text-[var(--color-text-muted)] mt-6 opacity-60">
               Secure payment via PayPal. Cancel anytime.
             </p>
           </div>
@@ -181,52 +221,56 @@ export default function OrderPage() {
 
   // Step 1: Lead capture form
   return (
-    <div className="min-h-screen bg-[var(--color-background)]">
+    <div className="min-h-screen">
       <nav className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold gradient-text">
+          <Link href="/" className="text-2xl font-bold gradient-text tracking-tight">
             MoltBotSupport
           </Link>
-          <Link href="/" className="text-[var(--color-text-muted)] hover:text-white transition text-sm">
-            &larr; Back to Home
+          <Link href="/" className="flex items-center gap-2 text-[var(--color-text-muted)] hover:text-white transition-colors duration-300 text-sm">
+            <ArrowLeftIcon />
+            Back to Home
           </Link>
         </div>
       </nav>
 
       <section className="pt-28 pb-8 px-6 relative overflow-hidden">
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-[var(--color-primary)] rounded-full blur-[128px] opacity-20 animate-pulse-glow" />
-        <div className="max-w-3xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Get Your Custom AI Bot — <span className="gradient-text">$99/mo</span>
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-[var(--color-primary)] rounded-full blur-[128px] opacity-[0.12]" />
+        <div className="max-w-3xl mx-auto text-center relative z-10 animate-fade-in-up">
+          <p className="section-label mb-4">Order Your Bot</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+            Get Your Custom AI Bot &mdash; <span className="gradient-text">$99/mo</span>
           </h1>
-          <div className="flex flex-wrap justify-center gap-4 text-[var(--color-text-muted)] text-sm">
-            <span className="flex items-center gap-1">
-              <span className="text-green-400">&#10003;</span> 1 Custom Bot
+          <div className="flex flex-wrap justify-center gap-6 text-[var(--color-text-muted)] text-sm">
+            <span className="flex items-center gap-2">
+              <span className="text-green-400"><CheckIcon /></span> 1 Custom Bot
             </span>
-            <span className="flex items-center gap-1">
-              <span className="text-green-400">&#10003;</span> 10,000 messages/month
+            <span className="flex items-center gap-2">
+              <span className="text-green-400"><CheckIcon /></span> 10,000 messages/month
             </span>
-            <span className="flex items-center gap-1">
-              <span className="text-green-400">&#10003;</span> Any Platform
+            <span className="flex items-center gap-2">
+              <span className="text-green-400"><CheckIcon /></span> Any Platform
             </span>
-            <span className="flex items-center gap-1">
-              <span className="text-green-400">&#10003;</span> Setup in 24 hours
+            <span className="flex items-center gap-2">
+              <span className="text-green-400"><CheckIcon /></span> Setup in 24 hours
             </span>
           </div>
         </div>
       </section>
 
       <section className="px-6 pb-20">
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto glass-card p-8 md:p-10">
+        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto glass-card p-8 md:p-10 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-primary)] to-transparent" />
+
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
               {error}
             </div>
           )}
 
           <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label htmlFor="name" className="block text-sm text-[var(--color-text-muted)] mb-2">Name *</label>
+              <label htmlFor="name" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Name *</label>
               <input
                 id="name"
                 name="name"
@@ -239,7 +283,7 @@ export default function OrderPage() {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm text-[var(--color-text-muted)] mb-2">Email *</label>
+              <label htmlFor="email" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Email *</label>
               <input
                 id="email"
                 name="email"
@@ -255,7 +299,7 @@ export default function OrderPage() {
 
           <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label htmlFor="phone" className="block text-sm text-[var(--color-text-muted)] mb-2">Phone *</label>
+              <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Phone *</label>
               <input
                 id="phone"
                 name="phone"
@@ -268,7 +312,7 @@ export default function OrderPage() {
               />
             </div>
             <div>
-              <label htmlFor="use_case" className="block text-sm text-[var(--color-text-muted)] mb-2">What will your bot do? *</label>
+              <label htmlFor="use_case" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Bot Purpose *</label>
               <select
                 id="use_case"
                 name="use_case"
@@ -290,7 +334,7 @@ export default function OrderPage() {
 
           <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label htmlFor="ai_model" className="block text-sm text-[var(--color-text-muted)] mb-2">AI Model *</label>
+              <label htmlFor="ai_model" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">AI Model *</label>
               <select
                 id="ai_model"
                 name="ai_model"
@@ -305,7 +349,7 @@ export default function OrderPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="platform" className="block text-sm text-[var(--color-text-muted)] mb-2">Platform *</label>
+              <label htmlFor="platform" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Platform *</label>
               <select
                 id="platform"
                 name="platform"
@@ -322,8 +366,8 @@ export default function OrderPage() {
           </div>
 
           <div className="mb-6">
-            <label htmlFor="notes" className="block text-sm text-[var(--color-text-muted)] mb-2">
-              Anything else? <span className="text-[var(--color-text-muted)]/60">(optional)</span>
+            <label htmlFor="notes" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">
+              Additional Notes <span className="opacity-50">(optional)</span>
             </label>
             <input
               id="notes"
@@ -339,11 +383,11 @@ export default function OrderPage() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full py-4 text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary w-full py-4 text-base flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
-                <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Submitting...
               </>
             ) : (
@@ -351,7 +395,7 @@ export default function OrderPage() {
             )}
           </button>
 
-          <p className="text-center text-xs text-[var(--color-text-muted)] mt-4">
+          <p className="text-center text-xs text-[var(--color-text-muted)] mt-4 opacity-60">
             We&apos;ll get back to you within 24 hours.
           </p>
         </form>
