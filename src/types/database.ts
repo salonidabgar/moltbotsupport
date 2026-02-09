@@ -108,11 +108,11 @@ export interface Database {
           name: string
           email: string
           phone: string
-          bot_description: string
+          use_case: string
           ai_model: 'claude' | 'gpt' | 'gemini'
           platform: 'telegram' | 'discord' | 'whatsapp'
-          special_requirements: string | null
-          payment_method: 'razorpay' | 'paypal'
+          notes: string | null
+          payment_method: 'pending' | 'razorpay' | 'paypal'
           payment_id: string | null
           payment_status: 'pending' | 'paid' | 'failed'
           amount: number
@@ -124,11 +124,11 @@ export interface Database {
           name: string
           email: string
           phone: string
-          bot_description: string
+          use_case: string
           ai_model: 'claude' | 'gpt' | 'gemini'
           platform: 'telegram' | 'discord' | 'whatsapp'
-          special_requirements?: string | null
-          payment_method: 'razorpay' | 'paypal'
+          notes?: string | null
+          payment_method: 'pending' | 'razorpay' | 'paypal'
           payment_id?: string | null
           payment_status?: 'pending' | 'paid' | 'failed'
           amount: number
@@ -140,11 +140,11 @@ export interface Database {
           name?: string
           email?: string
           phone?: string
-          bot_description?: string
+          use_case?: string
           ai_model?: 'claude' | 'gpt' | 'gemini'
           platform?: 'telegram' | 'discord' | 'whatsapp'
-          special_requirements?: string | null
-          payment_method?: 'razorpay' | 'paypal'
+          notes?: string | null
+          payment_method?: 'pending' | 'razorpay' | 'paypal'
           payment_id?: string | null
           payment_status?: 'pending' | 'paid' | 'failed'
           amount?: number

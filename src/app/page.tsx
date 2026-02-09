@@ -49,7 +49,7 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/order" className="btn-primary text-lg px-8 py-4">
-              Get Your Bot — $99/mo
+              Get Your Bot Now
             </Link>
             <Link href="#features" className="btn-secondary text-lg px-8 py-4">
               Learn More
@@ -258,7 +258,7 @@ export default function LandingPage() {
               Join thousands of businesses using MoltBotSupport to deliver exceptional customer experiences.
             </p>
             <Link href="/order" className="btn-primary text-lg px-10 py-4 inline-block">
-              Get Your Bot — $99/mo
+              Get Your Bot Now
             </Link>
           </div>
         </div>
