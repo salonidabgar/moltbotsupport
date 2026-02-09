@@ -48,11 +48,11 @@ export default function LandingPage() {
             Deploy to Telegram, Discord, and WhatsApp in minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/signup" className="btn-primary text-lg px-8 py-4">
-              Start Building Free
+            <Link href="/order" className="btn-primary text-lg px-8 py-4">
+              Get Your Bot — $99/mo
             </Link>
-            <Link href="#demo" className="btn-secondary text-lg px-8 py-4">
-              Watch Demo
+            <Link href="#features" className="btn-secondary text-lg px-8 py-4">
+              Learn More
             </Link>
           </div>
         </div>
@@ -204,89 +204,43 @@ export default function LandingPage() {
             Simple, Transparent Pricing
           </h2>
           <p className="text-[var(--color-text-muted)] text-center mb-16 max-w-2xl mx-auto">
-            Start free, scale as you grow
+            One plan. Everything included. No surprises.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Free Plan */}
-            <div className="glass-card p-8">
-              <h3 className="text-xl font-semibold mb-2">Free</h3>
-              <p className="text-[var(--color-text-muted)] mb-6">Perfect for getting started</p>
-              <p className="text-4xl font-bold mb-6">$0<span className="text-lg font-normal text-[var(--color-text-muted)]">/mo</span></p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> 1 Bot
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> 100 messages/month
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> 1 Channel
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Basic analytics
-                </li>
-              </ul>
-              <Link href="/signup" className="btn-secondary w-full block text-center">
-                Get Started
-              </Link>
-            </div>
-
-            {/* Pro Plan */}
-            <div className="glass-card p-8 border-2 border-[var(--color-primary)] relative">
+          <div className="max-w-md mx-auto">
+            <div className="glass-card p-10 border-2 border-[var(--color-primary)] relative">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--color-primary)] text-white text-sm px-4 py-1 rounded-full">
-                Most Popular
+                All-Inclusive
               </div>
-              <h3 className="text-xl font-semibold mb-2">Pro</h3>
-              <p className="text-[var(--color-text-muted)] mb-6">For growing businesses</p>
-              <p className="text-4xl font-bold mb-6">$29<span className="text-lg font-normal text-[var(--color-text-muted)]">/mo</span></p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> 10 Bots
+              <h3 className="text-xl font-semibold mb-2 text-center">Custom AI Bot</h3>
+              <p className="text-[var(--color-text-muted)] text-center mb-6">Everything you need to get started</p>
+              <p className="text-5xl font-bold mb-8 text-center">$99<span className="text-lg font-normal text-[var(--color-text-muted)]">/mo</span></p>
+              <ul className="space-y-4 mb-10">
+                <li className="flex items-center gap-3 text-[var(--color-text-muted)]">
+                  <span className="text-green-400 text-lg">&#10003;</span> 1 Custom AI Bot
                 </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> 10,000 messages/month
+                <li className="flex items-center gap-3 text-[var(--color-text-muted)]">
+                  <span className="text-green-400 text-lg">&#10003;</span> 10,000 messages/month
                 </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> All channels
+                <li className="flex items-center gap-3 text-[var(--color-text-muted)]">
+                  <span className="text-green-400 text-lg">&#10003;</span> Any platform (Telegram, Discord, WhatsApp)
                 </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Advanced analytics
+                <li className="flex items-center gap-3 text-[var(--color-text-muted)]">
+                  <span className="text-green-400 text-lg">&#10003;</span> Choose your AI (Claude, GPT-4, Gemini)
                 </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Priority support
+                <li className="flex items-center gap-3 text-[var(--color-text-muted)]">
+                  <span className="text-green-400 text-lg">&#10003;</span> Setup within 24 hours
                 </li>
-              </ul>
-              <Link href="/signup?plan=pro" className="btn-primary w-full block text-center">
-                Upgrade to Pro
-              </Link>
-            </div>
-
-            {/* Enterprise Plan */}
-            <div className="glass-card p-8">
-              <h3 className="text-xl font-semibold mb-2">Enterprise</h3>
-              <p className="text-[var(--color-text-muted)] mb-6">For large organizations</p>
-              <p className="text-4xl font-bold mb-6">Custom</p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Unlimited bots
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Unlimited messages
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Custom integrations
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> SLA guarantee
-                </li>
-                <li className="flex items-center gap-2 text-[var(--color-text-muted)]">
-                  <span className="text-green-400">✓</span> Dedicated support
+                <li className="flex items-center gap-3 text-[var(--color-text-muted)]">
+                  <span className="text-green-400 text-lg">&#10003;</span> Priority support
                 </li>
               </ul>
-              <Link href="/contact" className="btn-secondary w-full block text-center">
-                Contact Sales
+              <Link href="/order" className="btn-primary w-full block text-center text-lg py-4">
+                Get Your Bot Now
               </Link>
+              <p className="text-center text-xs text-[var(--color-text-muted)] mt-4">
+                No sign-up required. Cancel anytime.
+              </p>
             </div>
           </div>
         </div>
@@ -303,8 +257,8 @@ export default function LandingPage() {
             <p className="text-[var(--color-text-muted)] mb-8 max-w-xl mx-auto">
               Join thousands of businesses using MoltBotSupport to deliver exceptional customer experiences.
             </p>
-            <Link href="/signup" className="btn-primary text-lg px-10 py-4 inline-block">
-              Start Your Free Trial
+            <Link href="/order" className="btn-primary text-lg px-10 py-4 inline-block">
+              Get Your Bot — $99/mo
             </Link>
           </div>
         </div>

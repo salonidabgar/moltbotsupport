@@ -102,6 +102,56 @@ export interface Database {
           created_at?: string
         }
       }
+      orders: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          phone: string
+          bot_description: string
+          ai_model: 'claude' | 'gpt' | 'gemini'
+          platform: 'telegram' | 'discord' | 'whatsapp'
+          special_requirements: string | null
+          payment_method: 'razorpay' | 'paypal'
+          payment_id: string | null
+          payment_status: 'pending' | 'paid' | 'failed'
+          amount: number
+          currency: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          phone: string
+          bot_description: string
+          ai_model: 'claude' | 'gpt' | 'gemini'
+          platform: 'telegram' | 'discord' | 'whatsapp'
+          special_requirements?: string | null
+          payment_method: 'razorpay' | 'paypal'
+          payment_id?: string | null
+          payment_status?: 'pending' | 'paid' | 'failed'
+          amount: number
+          currency: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          phone?: string
+          bot_description?: string
+          ai_model?: 'claude' | 'gpt' | 'gemini'
+          platform?: 'telegram' | 'discord' | 'whatsapp'
+          special_requirements?: string | null
+          payment_method?: 'razorpay' | 'paypal'
+          payment_id?: string | null
+          payment_status?: 'pending' | 'paid' | 'failed'
+          amount?: number
+          currency?: string
+          created_at?: string
+        }
+      }
     }
   }
 }
