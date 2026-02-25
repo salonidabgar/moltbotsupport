@@ -114,13 +114,21 @@ export default function OrderPage() {
   }
 
   const handlePhoneDigitsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9\s\-()]/g, '')
-    setPhoneDigits(value)
-    const fullPhone = `${countryCode}${value.replace(/[\s\-().]/g, '')}`
+    // Only allow digits
+    const raw = e.target.value.replace(/[^0-9]/g, '')
+    // Auto-format: add spaces for readability (e.g. 98765 43210)
+    let formatted = raw
+    if (raw.length > 5) {
+      formatted = raw.slice(0, 5) + ' ' + raw.slice(5)
+    }
+    setPhoneDigits(formatted)
+    const fullPhone = `${countryCode}${raw}`
     setForm(prev => ({ ...prev, phone: fullPhone }))
 
-    if (value && value.replace(/[\s\-().]/g, '').length > 0 && !isValidPhoneDigits(value)) {
-      setPhoneError('Enter a valid phone number')
+    if (raw.length > 0 && raw.length < 6) {
+      setPhoneError('Phone number is too short')
+    } else if (raw.length > 14) {
+      setPhoneError('Phone number is too long')
     } else {
       setPhoneError('')
     }
@@ -137,8 +145,9 @@ export default function OrderPage() {
     e.preventDefault()
     setError('')
 
-    if (!phoneDigits || !isValidPhoneDigits(phoneDigits)) {
-      setPhoneError('Enter a valid phone number')
+    const rawDigits = phoneDigits.replace(/[^0-9]/g, '')
+    if (!rawDigits || rawDigits.length < 6 || rawDigits.length > 14) {
+      setPhoneError('Enter a valid phone number (6-14 digits)')
       return
     }
     setPhoneError('')
@@ -366,37 +375,39 @@ export default function OrderPage() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Phone *</label>
-              <div className="flex gap-2">
-                <select
-                  value={countryCode}
-                  onChange={handleCountryCodeChange}
-                  className="input w-[120px] shrink-0 text-sm"
-                  aria-label="Country code"
-                >
-                  {COUNTRY_CODES.map((c, i) => (
-                    <option key={`${c.code}-${i}`} value={c.code}>
-                      {c.flag} {c.label}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  value={phoneDigits}
-                  onChange={handlePhoneDigitsChange}
-                  className={`input flex-1 ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
-                  placeholder="234 567 8900"
-                />
-              </div>
-              {phoneError && (
-                <p className="text-red-400 text-xs mt-1.5">{phoneError}</p>
-              )}
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Phone *</label>
+            <div className="flex gap-3">
+              <select
+                value={countryCode}
+                onChange={handleCountryCodeChange}
+                className="input w-[140px] shrink-0"
+                aria-label="Country code"
+              >
+                {COUNTRY_CODES.map((c, i) => (
+                  <option key={`${c.code}-${i}`} value={c.code}>
+                    {c.flag} {c.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                id="phone"
+                name="phone_digits"
+                type="tel"
+                required
+                value={phoneDigits}
+                onChange={handlePhoneDigitsChange}
+                maxLength={15}
+                className={`input flex-1 ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                placeholder="98765 43210"
+              />
             </div>
+            {phoneError && (
+              <p className="text-red-400 text-xs mt-1.5">{phoneError}</p>
+            )}
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div>
               <label htmlFor="use_case" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Bot Purpose *</label>
               <select
