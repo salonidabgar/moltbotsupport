@@ -51,12 +51,43 @@ function CheckIcon() {
   )
 }
 
-// Validates international phone numbers: must start with + followed by country code and digits
-// Accepts optional spaces/dashes between digit groups
-function isValidPhone(phone: string): boolean {
-  const cleaned = phone.replace(/[\s\-().]/g, '')
-  // Must start with + and have 8-15 digits total (E.164 standard)
-  return /^\+[1-9]\d{7,14}$/.test(cleaned)
+const COUNTRY_CODES = [
+  { code: '+1', flag: '🇺🇸', label: 'US +1' },
+  { code: '+1', flag: '🇨🇦', label: 'CA +1' },
+  { code: '+44', flag: '🇬🇧', label: 'UK +44' },
+  { code: '+91', flag: '🇮🇳', label: 'IN +91' },
+  { code: '+61', flag: '🇦🇺', label: 'AU +61' },
+  { code: '+49', flag: '🇩🇪', label: 'DE +49' },
+  { code: '+33', flag: '🇫🇷', label: 'FR +33' },
+  { code: '+81', flag: '🇯🇵', label: 'JP +81' },
+  { code: '+86', flag: '🇨🇳', label: 'CN +86' },
+  { code: '+55', flag: '🇧🇷', label: 'BR +55' },
+  { code: '+971', flag: '🇦🇪', label: 'UAE +971' },
+  { code: '+966', flag: '🇸🇦', label: 'SA +966' },
+  { code: '+65', flag: '🇸🇬', label: 'SG +65' },
+  { code: '+82', flag: '🇰🇷', label: 'KR +82' },
+  { code: '+39', flag: '🇮🇹', label: 'IT +39' },
+  { code: '+34', flag: '🇪🇸', label: 'ES +34' },
+  { code: '+31', flag: '🇳🇱', label: 'NL +31' },
+  { code: '+46', flag: '🇸🇪', label: 'SE +46' },
+  { code: '+47', flag: '🇳🇴', label: 'NO +47' },
+  { code: '+52', flag: '🇲🇽', label: 'MX +52' },
+  { code: '+234', flag: '🇳🇬', label: 'NG +234' },
+  { code: '+27', flag: '🇿🇦', label: 'ZA +27' },
+  { code: '+60', flag: '🇲🇾', label: 'MY +60' },
+  { code: '+63', flag: '🇵🇭', label: 'PH +63' },
+  { code: '+62', flag: '🇮🇩', label: 'ID +62' },
+  { code: '+7', flag: '🇷🇺', label: 'RU +7' },
+  { code: '+48', flag: '🇵🇱', label: 'PL +48' },
+  { code: '+90', flag: '🇹🇷', label: 'TR +90' },
+  { code: '+20', flag: '🇪🇬', label: 'EG +20' },
+  { code: '+254', flag: '🇰🇪', label: 'KE +254' },
+]
+
+// Validates phone digits (without country code): 6-14 digits
+function isValidPhoneDigits(digits: string): boolean {
+  const cleaned = digits.replace(/[\s\-().]/g, '')
+  return /^\d{6,14}$/.test(cleaned)
 }
 
 export default function OrderPage() {
@@ -69,6 +100,8 @@ export default function OrderPage() {
     platform: 'telegram',
     notes: '',
   })
+  const [countryCode, setCountryCode] = useState('+1')
+  const [phoneDigits, setPhoneDigits] = useState('')
   const [loading, setLoading] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paid, setPaid] = useState(false)
@@ -78,24 +111,34 @@ export default function OrderPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setForm(prev => ({ ...prev, [name]: value }))
+  }
 
-    if (name === 'phone') {
-      if (value && !value.startsWith('+')) {
-        setPhoneError('Must start with country code (e.g. +1, +91)')
-      } else if (value && value.length > 3 && !isValidPhone(value)) {
-        setPhoneError('Enter a valid phone number with country code')
-      } else {
-        setPhoneError('')
-      }
+  const handlePhoneDigitsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9\s\-()]/g, '')
+    setPhoneDigits(value)
+    const fullPhone = `${countryCode}${value.replace(/[\s\-().]/g, '')}`
+    setForm(prev => ({ ...prev, phone: fullPhone }))
+
+    if (value && value.replace(/[\s\-().]/g, '').length > 0 && !isValidPhoneDigits(value)) {
+      setPhoneError('Enter a valid phone number')
+    } else {
+      setPhoneError('')
     }
+  }
+
+  const handleCountryCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCode = e.target.value
+    setCountryCode(newCode)
+    const fullPhone = `${newCode}${phoneDigits.replace(/[\s\-().]/g, '')}`
+    setForm(prev => ({ ...prev, phone: fullPhone }))
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
 
-    if (!isValidPhone(form.phone)) {
-      setPhoneError('Enter a valid phone number with country code (e.g. +1 234 567 8900)')
+    if (!phoneDigits || !isValidPhoneDigits(phoneDigits)) {
+      setPhoneError('Enter a valid phone number')
       return
     }
     setPhoneError('')
@@ -326,16 +369,30 @@ export default function OrderPage() {
           <div className="grid md:grid-cols-2 gap-4 mb-4">
             <div>
               <label htmlFor="phone" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Phone *</label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                required
-                value={form.phone}
-                onChange={handleChange}
-                className={`input ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
-                placeholder="+1 234 567 8900"
-              />
+              <div className="flex gap-2">
+                <select
+                  value={countryCode}
+                  onChange={handleCountryCodeChange}
+                  className="input w-[120px] shrink-0 text-sm"
+                  aria-label="Country code"
+                >
+                  {COUNTRY_CODES.map((c, i) => (
+                    <option key={`${c.code}-${i}`} value={c.code}>
+                      {c.flag} {c.label}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={phoneDigits}
+                  onChange={handlePhoneDigitsChange}
+                  className={`input flex-1 ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                  placeholder="234 567 8900"
+                />
+              </div>
               {phoneError && (
                 <p className="text-red-400 text-xs mt-1.5">{phoneError}</p>
               )}
