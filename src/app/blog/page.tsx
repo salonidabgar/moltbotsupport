@@ -51,7 +51,7 @@ export default function BlogPage() {
             <Link href="/signin" className="btn-secondary">
               Sign In
             </Link>
-            <Link href="/signup" className="btn-primary">
+            <Link href="/order" className="btn-primary">
               Get Started
             </Link>
           </div>

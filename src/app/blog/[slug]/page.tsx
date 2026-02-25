@@ -1,3 +1,4 @@
+import React from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -181,6 +182,21 @@ MoltBotSupport provides all these analytics out of the box!
   },
 }
 
+function renderInlineMarkdown(text: string, keyPrefix: number): React.ReactNode {
+  // Handle **bold** and `code` inline markdown
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g)
+  if (parts.length === 1) return text
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={`${keyPrefix}-${i}`} className="text-white font-semibold">{part.slice(2, -2)}</strong>
+    }
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return <code key={`${keyPrefix}-${i}`} className="text-[var(--color-primary)] bg-[var(--color-surface)] px-1.5 py-0.5 rounded text-sm">{part.slice(1, -1)}</code>
+    }
+    return part
+  })
+}
+
 export function generateStaticParams() {
   return Object.keys(blogPosts).map((slug) => ({ slug }))
 }
@@ -216,7 +232,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <Link href="/signin" className="btn-secondary">
               Sign In
             </Link>
-            <Link href="/signup" className="btn-primary">
+            <Link href="/order" className="btn-primary">
               Get Started
             </Link>
           </div>
@@ -253,13 +269,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 return <h3 key={index} className="text-xl font-semibold mt-6 mb-3">{paragraph.replace('### ', '')}</h3>
               }
               if (paragraph.startsWith('- ')) {
-                return <li key={index} className="text-[var(--color-text-muted)] ml-4">{paragraph.replace('- ', '')}</li>
+                return <li key={index} className="text-[var(--color-text-muted)] ml-4">{renderInlineMarkdown(paragraph.replace('- ', ''), index)}</li>
               }
               if (paragraph.startsWith('1. ') || paragraph.startsWith('2. ') || paragraph.startsWith('3. ') || paragraph.startsWith('4. ')) {
-                return <li key={index} className="text-[var(--color-text-muted)] ml-4 list-decimal">{paragraph.replace(/^\d+\.\s/, '')}</li>
+                return <li key={index} className="text-[var(--color-text-muted)] ml-4 list-decimal">{renderInlineMarkdown(paragraph.replace(/^\d+\.\s/, ''), index)}</li>
               }
               if (paragraph.trim() === '') return null
-              return <p key={index} className="text-[var(--color-text-muted)] mb-4">{paragraph}</p>
+              return <p key={index} className="text-[var(--color-text-muted)] mb-4">{renderInlineMarkdown(paragraph, index)}</p>
             })}
           </div>
 

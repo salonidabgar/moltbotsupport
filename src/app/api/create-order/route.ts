@@ -25,7 +25,7 @@ export async function POST(request: Request) {
         payment_method: 'pending',
         payment_status: 'pending',
         amount: 9900,
-        currency: 'INR',
+        currency: 'USD',
       })
       .select()
       .single()

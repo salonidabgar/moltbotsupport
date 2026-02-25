@@ -383,7 +383,6 @@ export default function LandingPage() {
               <h5 className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)] mb-4">Company</h5>
               <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
                 <li><Link href="/about" className="hover:text-white transition-colors duration-300">About</Link></li>
-                <li><Link href="/careers" className="hover:text-white transition-colors duration-300">Careers</Link></li>
                 <li><Link href="/contact" className="hover:text-white transition-colors duration-300">Contact</Link></li>
               </ul>
             </div>
