@@ -10,6 +10,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    // Validate phone: must be E.164 format (+countrycode followed by 7-14 digits)
+    const cleanedPhone = phone.replace(/[\s\-().]/g, '')
+    if (!/^\+[1-9]\d{7,14}$/.test(cleanedPhone)) {
+      return NextResponse.json({ error: 'Invalid phone number. Include country code (e.g. +1 234 567 8900)' }, { status: 400 })
+    }
+
     const supabase = await createClient()
 
     const { data: order, error: dbError } = await supabase

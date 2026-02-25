@@ -51,6 +51,14 @@ function CheckIcon() {
   )
 }
 
+// Validates international phone numbers: must start with + followed by country code and digits
+// Accepts optional spaces/dashes between digit groups
+function isValidPhone(phone: string): boolean {
+  const cleaned = phone.replace(/[\s\-().]/g, '')
+  // Must start with + and have 8-15 digits total (E.164 standard)
+  return /^\+[1-9]\d{7,14}$/.test(cleaned)
+}
+
 export default function OrderPage() {
   const [form, setForm] = useState<FormData>({
     name: '',
@@ -65,14 +73,32 @@ export default function OrderPage() {
   const [orderId, setOrderId] = useState<string | null>(null)
   const [paid, setPaid] = useState(false)
   const [error, setError] = useState('')
+  const [phoneError, setPhoneError] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
+
+    if (name === 'phone') {
+      if (value && !value.startsWith('+')) {
+        setPhoneError('Must start with country code (e.g. +1, +91)')
+      } else if (value && value.length > 3 && !isValidPhone(value)) {
+        setPhoneError('Enter a valid phone number with country code')
+      } else {
+        setPhoneError('')
+      }
+    }
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (!isValidPhone(form.phone)) {
+      setPhoneError('Enter a valid phone number with country code (e.g. +1 234 567 8900)')
+      return
+    }
+    setPhoneError('')
     setLoading(true)
 
     try {
@@ -307,9 +333,12 @@ export default function OrderPage() {
                 required
                 value={form.phone}
                 onChange={handleChange}
-                className="input"
-                placeholder="+91 98765 43210"
+                className={`input ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                placeholder="+1 234 567 8900"
               />
+              {phoneError && (
+                <p className="text-red-400 text-xs mt-1.5">{phoneError}</p>
+              )}
             </div>
             <div>
               <label htmlFor="use_case" className="block text-xs uppercase tracking-widest text-[var(--color-text-muted)] mb-2">Bot Purpose *</label>
