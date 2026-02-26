@@ -381,7 +381,8 @@ export default function OrderPage() {
               <select
                 value={countryCode}
                 onChange={handleCountryCodeChange}
-                className="input w-[140px] shrink-0"
+                className="input"
+                style={{ width: '150px', minWidth: '150px', maxWidth: '150px' }}
                 aria-label="Country code"
               >
                 {COUNTRY_CODES.map((c, i) => (
@@ -398,7 +399,8 @@ export default function OrderPage() {
                 value={phoneDigits}
                 onChange={handlePhoneDigitsChange}
                 maxLength={15}
-                className={`input flex-1 ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                className={`input ${phoneError ? 'border-red-500/50 focus:border-red-500' : ''}`}
+                style={{ width: '100%' }}
                 placeholder="98765 43210"
               />
             </div>
