@@ -243,50 +243,56 @@ export default function OrderPage() {
               </div>
             </div>
 
-            <PayPalScriptProvider
-              options={{
-                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
-                currency: 'USD',
-              }}
-            >
-              <PayPalButtons
-                style={{
-                  layout: 'vertical',
-                  color: 'blue',
-                  shape: 'rect',
-                  label: 'pay',
+            {process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? (
+              <PayPalScriptProvider
+                options={{
+                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                  currency: 'USD',
                 }}
-                createOrder={async () => {
-                  const res = await fetch('/api/paypal/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ order_id: orderId }),
-                  })
-                  const data = await res.json()
-                  if (!res.ok) throw new Error(data.error)
-                  return data.paypal_order_id
-                }}
-                onApprove={async (data) => {
-                  setError('')
-                  const res = await fetch('/api/paypal/capture-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      paypal_order_id: data.orderID,
-                      order_id: orderId,
-                    }),
-                  })
-                  if (res.ok) {
-                    setPaid(true)
-                  } else {
-                    setError('Payment failed. Please try again.')
-                  }
-                }}
-                onError={() => {
-                  setError('Something went wrong with PayPal. Please try again.')
-                }}
-              />
-            </PayPalScriptProvider>
+              >
+                <PayPalButtons
+                  style={{
+                    layout: 'vertical',
+                    color: 'blue',
+                    shape: 'rect',
+                    label: 'pay',
+                  }}
+                  createOrder={async () => {
+                    const res = await fetch('/api/paypal/create-order', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ order_id: orderId }),
+                    })
+                    const data = await res.json()
+                    if (!res.ok) throw new Error(data.error)
+                    return data.paypal_order_id
+                  }}
+                  onApprove={async (data) => {
+                    setError('')
+                    const res = await fetch('/api/paypal/capture-order', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        paypal_order_id: data.orderID,
+                        order_id: orderId,
+                      }),
+                    })
+                    if (res.ok) {
+                      setPaid(true)
+                    } else {
+                      setError('Payment failed. Please try again.')
+                    }
+                  }}
+                  onError={() => {
+                    setError('Something went wrong with PayPal. Please try again.')
+                  }}
+                />
+              </PayPalScriptProvider>
+            ) : (
+              <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-sm text-center">
+                Payment system is loading. Please refresh the page.
+              </div>
+            )}
 
             <p className="text-center text-xs text-[var(--color-text-muted)] mt-6 opacity-60">
               Secure payment via PayPal. Cancel anytime.
